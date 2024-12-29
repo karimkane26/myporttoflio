@@ -1,0 +1,39 @@
+<?php
+// Connexion à la base de données
+$pdo = new PDO('mysql:host=localhost;dbname=ma_base', 'utilisateur', 'motdepasse');
+
+// Récupérer les produits
+$sql = "SELECT id, nom, prix FROM produits";
+$stmt = $pdo->query($sql);
+$produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Produits</title>
+</head>
+<body>
+    <h1>Liste des Produits</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Action</th>
+        </tr>
+        <?php foreach ($produits as $produit): ?>
+            <tr>
+                <td><?= $produit['id'] ?></td>
+                <td><?= htmlspecialchars($produit['nom']) ?></td>
+                <td><?= htmlspecialchars($produit['prix']) ?> €</td>
+                <td>
+                    <!-- Lien pour modifier le produit -->
+                    <a href="modifier.php?id=<?= $produit['id'] ?>">Modifier</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+</body>
+</html>
